@@ -205,13 +205,11 @@ Tree::~Tree()
 {
 	if (m_mother != NULL)
 	{
-		m_mother->~Tree();
-		delete m_mother;
+		 delete m_mother;
 	}
 	if (m_father != NULL)
 	{
-		m_father->~Tree();
-		delete m_father;
+		 delete m_father;
 	}
 }
 } // namespace family
