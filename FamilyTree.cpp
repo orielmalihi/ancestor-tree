@@ -166,9 +166,57 @@ string Tree::relationSearch(string target)
 	else
 		return relationM;
 }
+string Tree::findByDepth(int depth, char gender)
+{
+	if(m_depth > depth) return "";
+	if(m_depth == depth && m_gender == gender)
+		return m_name;
+	string nameL = "", nameR = "";
+	if(m_father!=NULL)
+		nameL = m_father->findByDepth(depth, gender);
+	if(m_mother!=NULL)
+		nameR = m_mother->findByDepth(depth, gender);
+	if(nameL.size()>nameR.size())
+		return nameL;
+	else
+		return nameR;			
+}
 string Tree::find(string target)
 {
-	return " ";
+	int depth = 0;
+	char gender;
+	while (target.size() > 11)
+	{
+		string temp = target.substr(0, 6);
+		if (temp != "great-")
+			throw runtime_error("The tree cannot handle the '"+target+"' relation\n");
+		depth++;
+		target = target.substr(6);
+	}
+	if (target.size() == 11)
+	{
+		string temp = target.substr(0, 5);
+		if (temp != "grand")
+			throw runtime_error("The tree cannot handle the '"+target+"' relation\n");
+		depth++;
+		target = target.substr(5);
+	}
+	if (target == "father")
+	{
+		gender = 'm';
+		depth++;
+	}
+	else if (target == "mother")
+	{
+		gender = 'f';
+		depth++;
+	}
+	else
+	{
+			throw runtime_error("The tree cannot handle the '"+target+"' relation\n");
+	}
+	string ans = findByDepth(depth, gender);
+	return ans;
 }
 string Tree::displayTree()
 {
@@ -200,16 +248,18 @@ void Tree::display()
 		dad_side = m_father->displayTree();
 	cout << ans << mom_side << dad_side << endl;
 }
-void Tree::remove(string target) {}
+void Tree::remove(string target)
+{
+}
 Tree::~Tree()
 {
 	if (m_mother != NULL)
 	{
-		 delete m_mother;
+		delete m_mother;
 	}
 	if (m_father != NULL)
 	{
-		 delete m_father;
+		delete m_father;
 	}
 }
 } // namespace family

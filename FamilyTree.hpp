@@ -32,6 +32,7 @@ private:
     void addFather(string target, string father, int& size);
     string displayTree();
     string relationSearch(string target);
+    string findByDepth(int depth, char gender);
 
 public:
     Tree(string name) : m_name(name),
