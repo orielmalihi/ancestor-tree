@@ -12,14 +12,12 @@ using namespace std;
 
 int main() {
 	family::Tree T ("Yosef"); // Yosef is the "root" of the tree (the youngest person).
-	// cout << "got here!!" << endl;
 	T.addFather("Yosef", "Yaakov")   // Tells the tree that the father of Yosef is Yaakov.
 	 .addMother("Yosef", "Rachel")   // Tells the tree that the mother of Yosef is Rachel.
 	 .addFather("Yaakov", "Isaac")
 	 .addMother("Yaakov", "Rivka")
 	 .addFather("Isaac", "Avraham")
 	 .addFather("Avraham", "Terah");
-	// cout << "got here!!" << endl;
 	T.display();                        // displays the tree in a human-friendly format.
 
 	cout << T.relation("Yaakov") << endl;  // prints "father"
@@ -32,8 +30,8 @@ int main() {
 
 	cout << T.find("mother") << endl;  // prints "Rachel"
 	cout << T.find("great-great-grandfather") << endl;  // prints "Terah"
+	
 	try {
-		// cout << "got here!!" << endl;
 		cout << T.find("uncle") << endl;  // throws an exception
 	} catch (const exception& ex) {
 	 	cout << ex.what() << endl;  // prints "The tree cannot handle the 'uncle' relation"
