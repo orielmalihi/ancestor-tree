@@ -168,18 +168,19 @@ string Tree::relationSearch(string target)
 }
 string Tree::findByDepth(int depth, char gender)
 {
-	if(m_depth > depth) return "";
-	if(m_depth == depth && m_gender == gender)
+	if (m_depth > depth)
+		return "";
+	if (m_depth == depth && m_gender == gender)
 		return m_name;
 	string nameL = "", nameR = "";
-	if(m_father!=NULL)
+	if (m_father != NULL)
 		nameL = m_father->findByDepth(depth, gender);
-	if(m_mother!=NULL)
+	if (m_mother != NULL)
 		nameR = m_mother->findByDepth(depth, gender);
-	if(nameL.size()>nameR.size())
+	if (nameL.size() > nameR.size())
 		return nameL;
 	else
-		return nameR;			
+		return nameR;
 }
 string Tree::find(string target)
 {
@@ -189,7 +190,7 @@ string Tree::find(string target)
 	{
 		string temp = target.substr(0, 6);
 		if (temp != "great-")
-			throw runtime_error("The tree cannot handle the '"+target+"' relation\n");
+			throw runtime_error("The tree cannot handle the '" + target + "' relation\n");
 		depth++;
 		target = target.substr(6);
 	}
@@ -197,7 +198,7 @@ string Tree::find(string target)
 	{
 		string temp = target.substr(0, 5);
 		if (temp != "grand")
-			throw runtime_error("The tree cannot handle the '"+target+"' relation\n");
+			throw runtime_error("The tree cannot handle the '" + target + "' relation\n");
 		depth++;
 		target = target.substr(5);
 	}
@@ -213,7 +214,7 @@ string Tree::find(string target)
 	}
 	else
 	{
-			throw runtime_error("The tree cannot handle the '"+target+"' relation\n");
+		throw runtime_error("The tree cannot handle the '" + target + "' relation\n");
 	}
 	string ans = findByDepth(depth, gender);
 	return ans;
@@ -250,24 +251,22 @@ void Tree::display()
 }
 void Tree::remove(string target)
 {
-	if(m_depth==0 && m_name == target) 
+	if (m_depth == 0 && m_name == target)
 		throw runtime_error("ERR can not remove the root of the tree");
-	if(m_father!=NULL && m_father->m_name == target){
+	if (m_father != NULL && m_father->m_name == target)
+	{
 		delete m_father;
 		m_father = NULL;
-		return;
 	}
-	if(m_mother!=NULL && m_mother->m_name == target){
+	if (m_mother != NULL && m_mother->m_name == target)
+	{
 		delete m_mother;
 		m_mother = NULL;
-		return;
 	}
-	if(m_father!=NULL)
+	if (m_father != NULL)
 		m_father->remove(target);
-	if(m_mother!=NULL)
+	if (m_mother != NULL)
 		m_mother->remove(target);
-
-
 }
 Tree::~Tree()
 {
