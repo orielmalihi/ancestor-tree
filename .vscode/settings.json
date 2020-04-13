@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "new": "cpp"
+        "new": "cpp",
+        "stdexcept": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

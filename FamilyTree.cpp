@@ -184,6 +184,7 @@ string Tree::findByDepth(int depth, char gender)
 }
 string Tree::find(string target)
 {
+	if(target == "me") return m_name;
 	int depth = 0;
 	char gender;
 	while (target.size() > 11)
@@ -217,7 +218,13 @@ string Tree::find(string target)
 		throw runtime_error("The tree cannot handle the '" + target + "' relation\n");
 	}
 	string ans = findByDepth(depth, gender);
-	return ans;
+	if(ans.size()>0)
+		return ans;
+	else
+	{
+			throw runtime_error("ERR was unable to find this tharget");
+	}
+		
 }
 string Tree::displayTree()
 {
