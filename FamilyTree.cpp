@@ -250,6 +250,24 @@ void Tree::display()
 }
 void Tree::remove(string target)
 {
+	if(m_depth==0 && m_name == target) 
+		throw runtime_error("ERR can not remove the root of the tree");
+	if(m_father!=NULL && m_father->m_name == target){
+		delete m_father;
+		m_father = NULL;
+		return;
+	}
+	if(m_mother!=NULL && m_mother->m_name == target){
+		delete m_mother;
+		m_mother = NULL;
+		return;
+	}
+	if(m_father!=NULL)
+		m_father->remove(target);
+	if(m_mother!=NULL)
+		m_mother->remove(target);
+
+
 }
 Tree::~Tree()
 {
