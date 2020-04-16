@@ -16,7 +16,7 @@ namespace family
 class Tree
 {
 private:
-    int treeSize;
+    int m_ch;
     int m_depth;
     char m_gender;
     string m_name;
@@ -25,7 +25,7 @@ private:
     Tree(string name, char gender, int depth) : m_name(name),
                                                 m_gender(gender),
                                                 m_depth(depth),
-                                                treeSize(0),
+                                                m_ch(0),
                                                 m_father(NULL),
                                                 m_mother(NULL) {}
     void addMother(string target, string mother, int& size);
@@ -33,12 +33,13 @@ private:
     string displayTree();
     string relationSearch(string target);
     string findByDepth(int depth, char gender);
+    void removeFromTree(string target, int& change);
 
 public:
     Tree(string name) : m_name(name),
                         m_gender(' '),
                         m_depth(0),
-                        treeSize(1),
+                        m_ch(1),
                         m_father(NULL),
                         m_mother(NULL) {}
     Tree &addMother(string target, string mother);

@@ -14,29 +14,30 @@ namespace family
 Tree &Tree::addMother(string target, string mother)
 {
 	Tree &root = *this;
-	int tempSize = treeSize;
+	int tempSize = m_ch;
 
 	if (m_name == target)
 	{
 		Tree *newMother = new Tree(mother, 'f', m_depth + 1);
 		if (m_mother == NULL)
+		{
 			m_mother = newMother;
+			m_ch++;
+		}
 		else
 		{
-			delete m_mother;
-			m_mother = newMother;
+			throw runtime_error("the targeted person already has a mother");
 		}
-		treeSize++;
 	}
 	else
 	{
 		if (m_mother != NULL)
-			m_mother->addMother(target, mother, treeSize);
+			m_mother->addMother(target, mother, m_ch);
 		if (m_father != NULL)
-			m_father->addMother(target, mother, treeSize);
+			m_father->addMother(target, mother, m_ch);
 	}
 
-	if (tempSize == treeSize)
+	if (tempSize == m_ch)
 	{
 		throw runtime_error("could not find the target person in the tree");
 	}
@@ -48,13 +49,14 @@ void Tree::addMother(string target, string mother, int &size)
 	{
 		Tree *newMother = new Tree(mother, 'f', m_depth + 1);
 		if (m_mother == NULL)
+		{
 			m_mother = newMother;
+			size++;
+		}
 		else
 		{
-			delete m_mother;
-			m_mother = newMother;
+			throw runtime_error("the targeted person already has a mother");
 		}
-		size++;
 	}
 	else
 	{
@@ -67,29 +69,30 @@ void Tree::addMother(string target, string mother, int &size)
 Tree &Tree::addFather(string target, string father)
 {
 	Tree &root = *this;
-	int tempSize = treeSize;
+	int tempSize = m_ch;
 
 	if (m_name == target)
 	{
 		Tree *newFather = new Tree(father, 'm', m_depth + 1);
 		if (m_father == NULL)
+		{
 			m_father = newFather;
+			m_ch++;
+		}
 		else
 		{
-			delete m_father;
-			m_father = newFather;
+			throw runtime_error("the targeted person already has a father");
 		}
-		treeSize++;
 	}
 	else
 	{
 		if (m_mother != NULL)
-			m_mother->addFather(target, father, treeSize);
+			m_mother->addFather(target, father, m_ch);
 		if (m_father != NULL)
-			m_father->addFather(target, father, treeSize);
+			m_father->addFather(target, father, m_ch);
 	}
 
-	if (tempSize == treeSize)
+	if (tempSize == m_ch)
 	{
 		throw runtime_error("could not find the target person in the tree");
 	}
@@ -101,13 +104,14 @@ void Tree::addFather(string target, string father, int &size)
 	{
 		Tree *newFather = new Tree(father, 'm', m_depth + 1);
 		if (m_father == NULL)
+		{
 			m_father = newFather;
+			size++;
+		}
 		else
 		{
-			delete m_father;
-			m_father = newFather;
+			throw runtime_error("the targeted person already has a father");
 		}
-		size++;
 	}
 	else
 	{
@@ -184,7 +188,8 @@ string Tree::findByDepth(int depth, char gender)
 }
 string Tree::find(string target)
 {
-	if(target == "me") return m_name;
+	if (target == "me")
+		return m_name;
 	int depth = 0;
 	char gender;
 	while (target.size() > 11)
@@ -218,13 +223,12 @@ string Tree::find(string target)
 		throw runtime_error("The tree cannot handle the '" + target + "' relation\n");
 	}
 	string ans = findByDepth(depth, gender);
-	if(ans.size()>0)
+	if (ans.size() > 0)
 		return ans;
 	else
 	{
-			throw runtime_error("ERR was unable to find this tharget");
+		throw runtime_error("ERR was unable to find this tharget");
 	}
-		
 }
 string Tree::displayTree()
 {
@@ -258,22 +262,34 @@ void Tree::display()
 }
 void Tree::remove(string target)
 {
+	int ch = m_ch;
+	removeFromTree(target, m_ch);
+	if (ch == m_ch)
+	{
+		throw runtime_error("the targeted person is not in the tree. cant be removed.");
+	}
+}
+
+void Tree::removeFromTree(string target, int &change)
+{
 	if (m_depth == 0 && m_name == target)
 		throw runtime_error("ERR can not remove the root of the tree");
 	if (m_father != NULL && m_father->m_name == target)
 	{
 		delete m_father;
+		change++;
 		m_father = NULL;
 	}
 	if (m_mother != NULL && m_mother->m_name == target)
 	{
 		delete m_mother;
+		change++;
 		m_mother = NULL;
 	}
 	if (m_father != NULL)
-		m_father->remove(target);
+		m_father->removeFromTree(target, change);
 	if (m_mother != NULL)
-		m_mother->remove(target);
+		m_mother->removeFromTree(target, change);
 }
 Tree::~Tree()
 {
