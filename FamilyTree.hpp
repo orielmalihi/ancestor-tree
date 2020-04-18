@@ -28,8 +28,7 @@ private:
                                                 m_ch(0),
                                                 m_father(NULL),
                                                 m_mother(NULL) {}
-    void addMother(string target, string mother, int& size);
-    void addFather(string target, string father, int& size);
+    void addParent(string target, string parent, char gender, int& ch);
     string displayTree();
     string relationSearch(string target);
     string findByDepth(int depth, char gender);

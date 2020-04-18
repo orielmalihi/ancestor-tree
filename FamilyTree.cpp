@@ -11,117 +11,68 @@ using namespace std;
 
 namespace family
 {
+void Tree::addParent(string target, string parent, char gender, int &ch)
+{
+	if (m_name == target)
+	{
+		if (gender == 'f')
+		{
+			if (m_mother == NULL)
+			{
+				Tree *newParent = new Tree(parent, gender, m_depth + 1);
+				m_mother = newParent;
+				ch++;
+			}
+			else
+			{
+				throw runtime_error("the targeted person already has a mother");
+			}
+		}
+		else // gender = 'f'
+		{
+			if (m_father == NULL)
+			{
+				Tree *newParent = new Tree(parent, gender, m_depth + 1);
+				m_father = newParent;
+				ch++;
+			}
+			else
+			{
+				throw runtime_error("the targeted person already has a father");
+			}
+		}
+	}
+	else
+	{
+		if (m_mother != NULL)
+			m_mother->addParent(target, parent, gender, ch);
+		if (m_father != NULL)
+			m_father->addParent(target, parent, gender, ch);
+	}
+}
 Tree &Tree::addMother(string target, string mother)
 {
-	Tree &root = *this;
-	int tempSize = m_ch;
-
-	if (m_name == target)
+	int temp_ch = m_ch;
+	this->addParent(target, mother, 'f', m_ch);
+	if (m_ch == temp_ch)
 	{
-		Tree *newMother = new Tree(mother, 'f', m_depth + 1);
-		if (m_mother == NULL)
-		{
-			m_mother = newMother;
-			m_ch++;
-		}
-		else
-		{
-			throw runtime_error("the targeted person already has a mother");
-		}
+		throw runtime_error("ERR: could not find the targetd person in this tree");
 	}
-	else
-	{
-		if (m_mother != NULL)
-			m_mother->addMother(target, mother, m_ch);
-		if (m_father != NULL)
-			m_father->addMother(target, mother, m_ch);
-	}
-
-	if (tempSize == m_ch)
-	{
-		throw runtime_error("could not find the target person in the tree");
-	}
-	return root;
-}
-void Tree::addMother(string target, string mother, int &size)
-{
-	if (m_name == target)
-	{
-		Tree *newMother = new Tree(mother, 'f', m_depth + 1);
-		if (m_mother == NULL)
-		{
-			m_mother = newMother;
-			size++;
-		}
-		else
-		{
-			throw runtime_error("the targeted person already has a mother");
-		}
-	}
-	else
-	{
-		if (m_mother != NULL)
-			m_mother->addMother(target, mother, size);
-		if (m_father != NULL)
-			m_father->addMother(target, mother, size);
-	}
+	return *this;
 }
 Tree &Tree::addFather(string target, string father)
 {
-	Tree &root = *this;
-	int tempSize = m_ch;
-
-	if (m_name == target)
+	int temp_ch = m_ch;
+	this->addParent(target, father, 'm', m_ch);
+	if (m_ch == temp_ch)
 	{
-		Tree *newFather = new Tree(father, 'm', m_depth + 1);
-		if (m_father == NULL)
-		{
-			m_father = newFather;
-			m_ch++;
-		}
-		else
-		{
-			throw runtime_error("the targeted person already has a father");
-		}
+		throw runtime_error("ERR: could not find the targetd person in this tree");
 	}
-	else
-	{
-		if (m_mother != NULL)
-			m_mother->addFather(target, father, m_ch);
-		if (m_father != NULL)
-			m_father->addFather(target, father, m_ch);
-	}
-
-	if (tempSize == m_ch)
-	{
-		throw runtime_error("could not find the target person in the tree");
-	}
-	return root;
+	return *this;
 }
-void Tree::addFather(string target, string father, int &size)
-{
-	if (m_name == target)
-	{
-		Tree *newFather = new Tree(father, 'm', m_depth + 1);
-		if (m_father == NULL)
-		{
-			m_father = newFather;
-			size++;
-		}
-		else
-		{
-			throw runtime_error("the targeted person already has a father");
-		}
-	}
-	else
-	{
-		if (m_mother != NULL)
-			m_mother->addFather(target, father, size);
-		if (m_father != NULL)
-			m_father->addFather(target, father, size);
-	}
-}
-string Tree::relation(string target)
+
+string
+Tree::relation(string target)
 {
 	string ans = relationSearch(target);
 	if (ans.size() > 0)
