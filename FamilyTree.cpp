@@ -28,7 +28,7 @@ void Tree::addParent(string target, string parent, char gender, int &ch)
 				throw runtime_error("the targeted person already has a mother");
 			}
 		}
-		else // gender = 'f'
+		else // gender = 'm'
 		{
 			if (m_father == NULL)
 			{
